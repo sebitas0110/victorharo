@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web personal — Víctor Haro Rodríguez</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #141414;
+    --dark-mid: #1e1e1e;
+    --mid: #2e2e2e;
+    --mid-light: #4a4a4a;
+    --grey: #6e6e6e;
+    --grey-light: #9a9a9a;
+    --silver: #c0c0c0;
+    --light: #e0e0e0;
+    --white: #f5f5f5;
+    --pure-white: #ffffff;
+    --accent: #d4d4d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Mono', monospace;
+    background: var(--black);
+    color: var(--light);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 8px; height: 8px;
+    background: var(--white);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+  }
+  .cursor-ring {
+    width: 32px; height: 32px;
+    border: 1px solid var(--grey);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.12s ease-out;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 4rem;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--grey);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12rem 4rem 6rem 4rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    color: var(--grey);
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--grey);
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6vw, 6rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--grey-light);
+  }
+
+  .hero-surname {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(3.5rem, 6vw, 6rem);
+    font-weight: 200;
+    letter-spacing: 0.2em;
+    color: var(--mid-light);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  .hero-description {
+    font-size: 0.72rem;
+    line-height: 1.9;
+    color: var(--grey);
+    max-width: 380px;
+    margin-bottom: 3.5rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .btn-primary {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--white);
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    border: 1px solid var(--white);
+  }
+
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--white);
+  }
+
+  .btn-secondary {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--grey);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: color 0.3s;
+  }
+
+  .btn-secondary::after {
+    content: '→';
+    transition: transform 0.3s;
+  }
+
+  .btn-secondary:hover { color: var(--white); }
+  .btn-secondary:hover::after { transform: translateX(4px); }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    filter: grayscale(100%) contrast(1.05);
+    opacity: 0.75;
+    transition: opacity 0.5s;
+  }
+
+  .hero-right:hover .hero-photo { opacity: 0.85; }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--black) 0%, transparent 40%);
+    z-index: 1;
+  }
+
+  .hero-counter {
+    position: absolute;
+    bottom: 3rem;
+    right: 3rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .hero-counter span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--grey-light);
+  }
+
+  /* Marquee */
+  .marquee-section {
+    border-top: 1px solid var(--dark-mid);
+    border-bottom: 1px solid var(--dark-mid);
+    overflow: hidden;
+    padding: 1rem 0;
+    background: var(--dark);
+  }
+
+  .marquee-track {
+    display: flex;
+    animation: marquee 25s linear infinite;
+    white-space: nowrap;
+  }
+
+  .marquee-item {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--mid-light);
+    padding: 0 3rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .marquee-item span::before { content: '◆  '; color: var(--grey); }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* Stats */
+  .stats-section {
+    padding: 6rem 4rem;
+    background: var(--dark);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--dark-mid);
+  }
+
+  .stat-item {
+    padding: 2rem;
+    border-right: 1px solid var(--dark-mid);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+
+  .stat-item:last-child { border-right: none; }
+  .stat-item.visible { opacity: 1; transform: translateY(0); }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .stat-number sup {
+    font-size: 1.2rem;
+    vertical-align: super;
+    color: var(--grey);
+  }
+
+  .stat-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--grey);
+    line-height: 1.6;
+  }
+
+  .stat-divider {
+    width: 20px;
+    height: 1px;
+    background: var(--mid-light);
+    margin-top: 0.25rem;
+  }
+
+  /* About */
+  .about-section {
+    padding: 10rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    background: var(--black);
+  }
+
+  .section-header {
+    margin-bottom: 4rem;
+  }
+
+  .section-index {
+    font-size: 0.58rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-index::after {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 1px;
+    background: var(--grey);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--grey-light);
+  }
+
+  .about-text p {
+    font-size: 0.7rem;
+    line-height: 2;
+    color: var(--grey);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-skills {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .skill-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .skill-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .skill-bar {
+    height: 1px;
+    background: var(--dark-mid);
+    position: relative;
+  }
+
+  .skill-fill {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    background: var(--grey-light);
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Experience */
+  .experience-section {
+    padding: 10rem 4rem;
+    background: var(--dark);
+    border-top: 1px solid var(--dark-mid);
+  }
+
+  .exp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 6rem;
+    margin-top: 5rem;
+  }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 2rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--dark-mid);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.6s ease;
+  }
+
+  .exp-item.visible { opacity: 1; transform: translateX(0); }
+
+  .exp-date {
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    color: var(--grey);
+    padding-top: 0.2rem;
+    line-height: 1.8;
+  }
+
+  .exp-company {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+
+  .exp-role {
+    font-size: 0.6rem;
+    color: var(--grey);
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+
+  .exp-details {
+    font-size: 0.62rem;
+    line-height: 1.8;
+    color: var(--grey);
+  }
+
+  .exp-details li {
+    list-style: none;
+    padding-left: 1rem;
+    position: relative;
+    margin-bottom: 0.35rem;
+  }
+
+  .exp-details li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--mid-light);
+  }
+
+  /* Projects */
+  .projects-section {
+    padding: 10rem 4rem;
+    background: var(--black);
+    border-top: 1px solid var(--dark-mid);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    margin-top: 5rem;
+    background: var(--dark-mid);
+  }
+
+  .project-card {
+    background: var(--black);
+    padding: 3.5rem;
+    transition: background 0.4s;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--grey-light);
+    transition: width 0.6s ease;
+  }
+
+  .project-card:hover::before { width: 100%; }
+  .project-card:hover { background: var(--dark); }
+
+  .project-card.featured {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    background: var(--dark);
+    border: 1px solid var(--dark-mid);
+  }
+
+  .project-number {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    color: var(--mid-light);
+    margin-bottom: 2rem;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .project-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+  }
+
+  .project-subtitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 2rem;
+  }
+
+  .project-year {
+    display: inline-block;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    color: var(--grey);
+    border: 1px solid var(--dark-mid);
+    padding: 0.3rem 0.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .project-desc {
+    font-size: 0.65rem;
+    line-height: 1.9;
+    color: var(--grey);
+    margin-bottom: 2rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    border: 1px solid var(--dark-mid);
+    padding: 0.25rem 0.75rem;
+    transition: all 0.3s;
+  }
+
+  .tag:hover { border-color: var(--grey-light); color: var(--light); }
+
+  .project-featured-right {
+    border-left: 1px solid var(--dark-mid);
+    padding-left: 4rem;
+  }
+
+  .featured-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .spec-item {
+    padding: 1.5rem;
+    border: 1px solid var(--dark-mid);
+  }
+
+  .spec-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .spec-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  /* Competitions */
+  .competitions-section {
+    padding: 10rem 4rem;
+    background: var(--dark);
+    border-top: 1px solid var(--dark-mid);
+  }
+
+  .comp-list {
+    margin-top: 5rem;
+  }
+
+  .comp-item {
+    display: grid;
+    grid-template-columns: 140px 80px 1fr 100px;
+    gap: 3rem;
+    align-items: start;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--dark-mid);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s ease;
+  }
+
+  .comp-item.visible { opacity: 1; transform: translateY(0); }
+
+  .comp-type {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .comp-award {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--silver);
+    font-style: italic;
+  }
+
+  .comp-title {
+    font-size: 0.65rem;
+    line-height: 1.8;
+    color: var(--grey-light);
+  }
+
+  .comp-year {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    color: var(--grey);
+    text-align: right;
+  }
+
+  /* Education */
+  .education-section {
+    padding: 10rem 4rem;
+    background: var(--black);
+    border-top: 1px solid var(--dark-mid);
+  }
+
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 5rem;
+    border: 1px solid var(--dark-mid);
+  }
+
+  .edu-item {
+    padding: 3rem;
+    border-right: 1px solid var(--dark-mid);
+    border-bottom: 1px solid var(--dark-mid);
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.5s ease;
+  }
+
+  .edu-item:nth-child(3n) { border-right: none; }
+  .edu-item.visible { opacity: 1; transform: translateY(0); }
+
+  .edu-year {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    color: var(--grey);
+    margin-bottom: 1rem;
+  }
+
+  .edu-inst {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-course {
+    font-size: 0.62rem;
+    line-height: 1.7;
+    color: var(--grey);
+  }
+
+  .edu-hours {
+    margin-top: 1rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    color: var(--mid-light);
+  }
+
+  /* Contact */
+  .contact-section {
+    padding: 10rem 4rem;
+    background: var(--dark);
+    border-top: 1px solid var(--dark-mid);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: center;
+  }
+
+  .contact-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+    margin-top: 2rem;
+  }
+
+  .contact-tagline em {
+    font-style: italic;
+    color: var(--grey-light);
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--dark-mid);
+  }
+
+  .contact-item:last-child { border-bottom: none; }
+
+  .contact-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+
+  .contact-value {
+    font-size: 0.9rem;
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-value:hover { color: var(--grey-light); }
+
+  /* Footer */
+  footer {
+    padding: 2rem 4rem;
+    background: var(--black);
+    border-top: 1px solid var(--dark-mid);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--mid-light);
+    text-transform: uppercase;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tag { animation: fadeUp 0.8s ease 0.2s both; }
+  .hero-name { animation: fadeUp 0.8s ease 0.35s both; }
+  .hero-surname { animation: fadeUp 0.8s ease 0.45s both; }
+  .hero-description { animation: fadeUp 0.8s ease 0.55s both; }
+  .hero-ctas { animation: fadeUp 0.8s ease 0.65s both; }
+
+  /* Mobile adjustments */
+  @media (max-width: 1024px) {
+    nav { padding: 1.5rem 2rem; }
+    .nav-links { gap: 1.5rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 9rem 2rem 4rem; }
+    .hero-right { height: 50vh; }
+    .stats-section { grid-template-columns: repeat(3, 1fr); padding: 4rem 2rem; }
+    .about-section { grid-template-columns: 1fr; gap: 4rem; padding: 6rem 2rem; }
+    .exp-grid { grid-template-columns: 1fr; gap: 0; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+    .project-featured-right { border-left: none; border-top: 1px solid var(--dark-mid); padding-left: 0; padding-top: 2rem; }
+    .comp-item { grid-template-columns: 1fr 1fr; }
+    .comp-year { grid-column: span 2; }
+    .edu-grid { grid-template-columns: 1fr 1fr; }
+    .edu-item:nth-child(3n) { border-right: 1px solid var(--dark-mid); }
+    .edu-item:nth-child(2n) { border-right: none; }
+    .contact-section { grid-template-columns: 1fr; gap: 4rem; padding: 6rem 2rem; }
+    .experience-section, .projects-section, .competitions-section, .education-section { padding: 6rem 2rem; }
+    footer { flex-direction: column; gap: 0.5rem; padding: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <div class="nav-logo">VHR — Arq.</div>
+  <ul class="nav-links">
+    <li><a href="#about">Perfil</a></li>
+    <li><a href="#experience">Experiencia</a></li>
+    <li><a href="#projects">Proyectos</a></li>
+    <li><a href="#competitions">Logros</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag">Arquitecto &amp; BIM Modeler — Trujillo, PE</p>
+    <h1 class="hero-name">Víctor <em>Jesús</em></h1>
+    <p class="hero-surname">Haro Rodríguez</p>
+    <p class="hero-description">
+      Egresado de Arquitectura en la UPAO con especialización en metodología BIM y diseño bioclimático. Experiencia en modelado integral de proyectos residenciales de gran escala, coordinación entre especialidades y gestión documental BIM.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn-primary">Ver proyectos</a>
+      <a href="#contact" class="btn-secondary">Contactar</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="/mnt/user-data/uploads/WhatsApp_Image_2026-03-10_at_10_53_42_AM.jpeg" alt="Víctor Haro Rodríguez" class="hero-photo">
+    <div class="hero-overlay"></div>
+    <div class="hero-counter">
+      <span>Arquitecto &amp; BIM Modeler</span>
+      <span>2020 — 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">
+      <span>Revit Architecture</span>
+      <span>Navisworks Manage</span>
+      <span>Autodesk Construction Cloud</span>
+      <span>Revizto Expert Lvl 3</span>
+      <span>Dynamo &amp; Power BI</span>
+      <span>Lumion &amp; Enscape</span>
+      <span>D5 Render</span>
+      <span>SketchUp Pro</span>
+      <span>Adobe Photoshop</span>
+      <span>Diseño Bioclimático</span>
+      <span>S10 Presupuestos</span>
+      <span>Ms Project</span>
+    </div>
+    <div class="marquee-item" aria-hidden="true">
+      <span>Revit Architecture</span>
+      <span>Navisworks Manage</span>
+      <span>Autodesk Construction Cloud</span>
+      <span>Revizto Expert Lvl 3</span>
+      <span>Dynamo &amp; Power BI</span>
+      <span>Lumion &amp; Enscape</span>
+      <span>D5 Render</span>
+      <span>SketchUp Pro</span>
+      <span>Adobe Photoshop</span>
+      <span>Diseño Bioclimático</span>
+      <span>S10 Presupuestos</span>
+      <span>Ms Project</span>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<section class="stats-section" id="stats">
+  <div class="stat-item">
+    <div class="stat-number">4<sup>+</sup></div>
+    <div class="stat-divider"></div>
+    <div class="stat-label">Empresas en las que<br>he colaborado</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">4</div>
+    <div class="stat-divider"></div>
+    <div class="stat-label">Proyectos BIM<br>documentados en portafolio</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">400<sup>+</sup></div>
+    <div class="stat-divider"></div>
+    <div class="stat-label">Horas de formación<br>especializada BIM</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">2<sup>do</sup></div>
+    <div class="stat-divider"></div>
+    <div class="stat-label">Lugar en concursos<br>nacionales e institucionales</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">3</div>
+    <div class="stat-divider"></div>
+    <div class="stat-label">Niveles Expert<br>certificados en Revizto</div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div>
+    <div class="section-header">
+      <p class="section-index">01 — Perfil</p>
+      <h2 class="section-title">Diseño<br><em>responsable</em><br>con propósito</h2>
+    </div>
+    <div class="about-text">
+      <p>
+        Mi formación combina el rigor técnico de la metodología BIM con una sensibilidad hacia el entorno y las personas. Me especialicé en diseño bioclimático con estudios complementarios en México, convencido de que la arquitectura debe responder al clima y al bienestar humano.
+      </p>
+      <p>
+        Con dominio en plataformas como Revit, Navisworks, Revizto y Autodesk Construction Cloud, desarrollo proyectos desde la conceptualización hasta la coordinación multidisciplinaria, generando modelos de alta precisión y documentación técnica de calidad.
+      </p>
+      <p>
+        Cuento con inglés avanzado (B2) certificado por la UPAO, español nativo y nociones de portugués, lo que me permite desenvolverme en entornos internacionales de colaboración.
+      </p>
+    </div>
+  </div>
+  <div class="about-skills" id="skillsSection">
+    <p class="section-index" style="margin-bottom:2rem;">Nivel de dominio técnico</p>
+    <div class="skill-row">
+      <div class="skill-label"><span>Revit (ARQ / STR / MEP)</span><span>95%</span></div>
+      <div class="skill-bar"><div class="skill-fill" data-width="95"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>Coordinación BIM / Navisworks</span><span>90%</span></div>
+      <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>Revizto (Exp. Lvl 3)</span><span>92%</span></div>
+      <div class="skill-bar"><div class="skill-fill" data-width="92"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>Renderizado (Enscape / D5)</span><span>85%</span></div>
+      <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>SketchUp Pro</span><span>88%</span></div>
+      <div class="skill-bar"><div class="skill-fill" data-width="88"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>AutoCAD</span><span>80%</span></div>
+      <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>Adobe Photoshop / Illustrator</span><span>80%</span></div>
+      <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-label"><span>Diseño Bioclimático</span><span>78%</span></div>
+      <div class="skill-bar"><div class="skill-fill" data-width="78"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience-section" id="experience">
+  <div class="section-header">
+    <p class="section-index">02 — Experiencia</p>
+    <h2 class="section-title">Trayectoria<br><em>profesional</em></h2>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-item">
+      <div class="exp-date">Nov 2025<br>Feb 2026</div>
+      <div>
+        <div class="exp-company">Line On BIM</div>
+        <div class="exp-role">— Arquitecto BIM</div>
+        <ul class="exp-details">
+          <li>Modelado BIM de proyectos ARQ, STR y MEP</li>
+          <li>Detección de interferencias y coordinación entre especialidades</li>
+          <li>Generación de planos de construcción y documentos técnicos</li>
+          <li>Extracción de metrados y cuantificación de materiales del modelo</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-date">Ago 2025<br>Oct 2025</div>
+      <div>
+        <div class="exp-company">MQ Ingeniería y Construcción</div>
+        <div class="exp-role">— Modelador BIM</div>
+        <ul class="exp-details">
+          <li>Modelado BIM MEP de proyectos comerciales</li>
+          <li>Detección de interferencias entre distintos modelos</li>
+          <li>Coordinación entre especialidades del proyecto</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-date">Ene 2025<br>Mar 2025</div>
+      <div>
+        <div class="exp-company">Municipalidad Prov. de Trujillo</div>
+        <div class="exp-role">— Asistente de Arquitectura</div>
+        <ul class="exp-details">
+          <li>Elaboración y revisión de expedientes técnicos</li>
+          <li>Planos arquitectónicos en AutoCAD y visualización 3D</li>
+          <li>Metrados, costos y presupuestos en S10</li>
+          <li>208 horas de práctica profesional certificadas</li>
+        </ul>
+      </div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-date">Ago 2024<br>Nov 2024</div>
+      <div>
+        <div class="exp-company">Constructora MACVIC</div>
+        <div class="exp-role">— Asistente de Arquitectura</div>
+        <ul class="exp-details">
+          <li>Planos y cortes arquitectónicos a nivel anteproyecto</li>
+          <li>Modelos 3D y diagramas de visualización</li>
+          <li>Diseño de espacios interiores y mobiliarios</li>
+          <li>200 horas de práctica pre-profesional</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section" id="projects">
+  <div class="section-header">
+    <p class="section-index">03 — Portafolio BIM</p>
+    <h2 class="section-title">Proyectos<br><em>desarrollados</em></h2>
+  </div>
+
+  <!-- Featured: Salaverry District -->
+  <div class="projects-grid">
+    <div class="project-card featured">
+      <div>
+        <p class="project-number">PF — 03 / Proyecto destacado</p>
+        <h3 class="project-title">Salaverry<br>District</h3>
+        <p class="project-subtitle">Torre Residencial · San Isidro, Lima</p>
+        <span class="project-year">2026</span>
+        <p class="project-desc">
+          Torre residencial de alta densidad ubicada en Av. Gral. Salaverry 2405, San Isidro — una de las zonas más exclusivas y dinámicas de Lima. Desarrollado en colaboración con TALE Inmobiliaria a través del equipo de LINE ON BIM.
+        </p>
+        <p class="project-desc">
+          El proyecto ofrece departamentos de alto estándar con acceso inmediato al Real Plaza Salaverry, zonas financieras y una amplia red de servicios urbanos. El diseño busca el equilibrio entre modernidad, comodidad y conectividad con acabados premium.
+        </p>
+        <p class="project-desc">
+          Como parte del equipo BIM, asumí la responsabilidad del modelado arquitectónico completo: casco estructural, tabiquerías, vanos y acabados; así como la detección y resolución de interferencias entre las especialidades del proyecto (ARQ, STR y MEP).
+        </p>
+        <div class="project-tags">
+          <span class="tag">Revit Architecture</span>
+          <span class="tag">Navisworks</span>
+          <span class="tag">Clash Detection</span>
+          <span class="tag">Tabiques &amp; Vanos</span>
+          <span class="tag">ACC</span>
+          <span class="tag">Torre Residencial</span>
+        </div>
+      </div>
+      <div class="project-featured-right">
+        <p class="project-number" style="margin-bottom:2rem;">Especificaciones técnicas</p>
+        <div class="featured-specs">
+          <div class="spec-item">
+            <div class="spec-value">35<sup>+</sup></div>
+            <div class="spec-label">Pisos modelados</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-value">ARQ</div>
+            <div class="spec-label">Especialidad principal</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-value">STR</div>
+            <div class="spec-label">Coordinación estructural</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-value">MEP</div>
+            <div class="spec-label">Instalaciones coordinadas</div>
+          </div>
+        </div>
+        <p class="project-desc">
+          El modelado incluyó la generación completa de documentación técnica desde el modelo BIM: cuantificación de materiales por especialidad (tabiques, carpintería metálica, vidrios y similares), planos de construcción por nivel y reportes de interferencias.
+        </p>
+        <p class="project-desc">
+          Se gestionó la interoperabilidad entre los distintos modelos de especialidades usando Navisworks Manage y Revizto para la coordinación en tiempo real con el equipo de proyecto.
+        </p>
+        <div style="margin-top:1.5rem;">
+          <p style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey);margin-bottom:0.5rem;">Cliente</p>
+          <p style="font-size:0.8rem;color:var(--white);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.1em;">TALE INMOBILIARIA — LINE ON BIM</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mendiburu -->
+    <div class="project-card">
+      <p class="project-number">PF — 01</p>
+      <h3 class="project-title">Mendiburu</h3>
+      <p class="project-subtitle">Vivienda Multifamiliar · Miraflores, Lima</p>
+      <span class="project-year">2025</span>
+      <p class="project-desc">
+        Proyecto residencial en Av. Mendiburu 1290 con Polar 330, Miraflores. 77 departamentos con tipologías de 1, 2 y 3 dormitorios, certificación LEED y diseño ecofriendly. Modelado del casco estructural, tabiquerías, vanos y acabados con detección de interferencias entre especialidades para EFRON ARQUITECTOS.
+      </p>
+      <div class="project-tags">
+        <span class="tag">Revit</span>
+        <span class="tag">LEED</span>
+        <span class="tag">Miraflores</span>
+        <span class="tag">77 Dpto.</span>
+      </div>
+    </div>
+
+    <!-- Bolognesi -->
+    <div class="project-card">
+      <p class="project-number">PF — 02</p>
+      <h3 class="project-title">Bolognesi</h3>
+      <p class="project-subtitle">Vivienda Multifamiliar · Miraflores, Lima</p>
+      <span class="project-year">2025</span>
+      <p class="project-desc">
+        Proyecto exclusivo en Calle Bolognesi 400, Miraflores, a pasos del Malecón Cisneros. Departamentos de 2 y 3 dormitorios, de 80 m² a 176 m², con arquitectura de autor y acabados de primer nivel. Responsable del modelado arquitectónico completo e interoperabilidad para EFRON ARQUITECTOS.
+      </p>
+      <div class="project-tags">
+        <span class="tag">Revit</span>
+        <span class="tag">80–176 m²</span>
+        <span class="tag">Miraflores</span>
+      </div>
+    </div>
+
+    <!-- The Wave -->
+    <div class="project-card" style="grid-column: span 2;">
+      <p class="project-number">PF — 04</p>
+      <h3 class="project-title">The Wave</h3>
+      <p class="project-subtitle">Torre Residencial de Lujo · Malecón Cisneros, Miraflores</p>
+      <span class="project-year">2026</span>
+      <p class="project-desc">
+        Proyecto residencial de lujo en el Malecón Cisneros 1220, Miraflores, donde la arquitectura vanguardista y las vistas al océano Pacífico definen un estilo de vida único. Fachada sofisticada, departamentos con acabados de alta gama, aprovechamiento de luz natural y brisa marina. Modelado íntegro de casco estructural, tabiquerías, vanos y acabados para TALE INMOBILIARIA a través de LINE ON BIM.
+      </p>
+      <div class="project-tags">
+        <span class="tag">Revit</span>
+        <span class="tag">Torre de Lujo</span>
+        <span class="tag">Océano Pacífico</span>
+        <span class="tag">ACC</span>
+        <span class="tag">Revizto</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITIONS & AWARDS -->
+<section class="competitions-section" id="competitions">
+  <div class="section-header">
+    <p class="section-index">04 — Logros</p>
+    <h2 class="section-title">Concursos<br><em>&amp; reconocimientos</em></h2>
+  </div>
+  <div class="comp-list">
+    <div class="comp-item">
+      <div class="comp-type">Concurso Académico</div>
+      <div class="comp-award">1.° lugar</div>
+      <div class="comp-title">Competencia de dibujo arquitectónico a mano alzada con técnicas mixtas en lápiz y marcador. Museo Solomon R. Guggenheim, Nueva York — UPAO</div>
+      <div class="comp-year">2024</div>
+    </div>
+    <div class="comp-item">
+      <div class="comp-type">Concurso Público</div>
+      <div class="comp-award">Mención<br>Honrosa</div>
+      <div class="comp-title">Concurso de diseño "Entornos escolares seguros de Trujillo", Colegio Rafael Narvaez Cadenillas. Organizado por TMT y GIZ — Cooperación Alemana para el Desarrollo</div>
+      <div class="comp-year">2024</div>
+    </div>
+    <div class="comp-item">
+      <div class="comp-type">Ponencia Internacional</div>
+      <div class="comp-award">Ponente</div>
+      <div class="comp-title">Congreso Internacional de Semilleros de Investigación 2024, UPAO — "Puesta en valor patrimonial de la Casa Hacienda La Sexta, 1960."</div>
+      <div class="comp-year">Nov 2024</div>
+    </div>
+    <div class="comp-item">
+      <div class="comp-type">Ponencia Nacional</div>
+      <div class="comp-award">Ponente</div>
+      <div class="comp-title">Congreso Nacional de Arquitectos, PUCP — "Regeneración urbana del Corredor Peatonal Pizarro y la Plazuela El Recreo. Propuesta de cubierta para vestigios arqueológicos."</div>
+      <div class="comp-year">Oct 2025</div>
+    </div>
+    <div class="comp-item">
+      <div class="comp-type">Certificación Internacional</div>
+      <div class="comp-award">Expert<br>Lvl 3</div>
+      <div class="comp-title">Revizto Integrated Collaboration Platform — Collaboration Essentials, Coordination Mastery y Elite Expert Course. Los 3 niveles completados.</div>
+      <div class="comp-year">Nov 2025</div>
+    </div>
+    <div class="comp-item">
+      <div class="comp-type">Evento de Diseño</div>
+      <div class="comp-award">Participación</div>
+      <div class="comp-title">Trujillo Design Week V Edición — Ejecución del espacio "De lo Virreinal a lo Digital" en representación de la Facultad de Arquitectura UPAO</div>
+      <div class="comp-year">Ago 2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="education-section" id="education">
+  <div class="section-header">
+    <p class="section-index">05 — Formación</p>
+    <h2 class="section-title">Educación<br><em>&amp; certificaciones</em></h2>
+  </div>
+  <div class="edu-grid">
+    <div class="edu-item">
+      <div class="edu-year">2020 — 2025</div>
+      <div class="edu-inst">UPAO</div>
+      <div class="edu-course">Bachiller en Arquitectura, Urbanismo y Artes — Universidad Privada Antenor Orrego, Trujillo</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Ago 2025 — en curso</div>
+      <div class="edu-inst">Fractal Studio</div>
+      <div class="edu-course">Diplomado Internacional en Coordinación y Gestión BIM</div>
+      <div class="edu-hours">220 horas</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Ene — Mar 2025</div>
+      <div class="edu-inst">Fractal Studio</div>
+      <div class="edu-course">Especialización en Modelado y Gestión BIM — Autodesk Authorized Training Center</div>
+      <div class="edu-hours">180 horas</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Jul 2024</div>
+      <div class="edu-inst">Trazzo Visual Studio</div>
+      <div class="edu-course">Revit MEP</div>
+      <div class="edu-hours">20 horas</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Ene 2024</div>
+      <div class="edu-inst">RED Academy</div>
+      <div class="edu-course">Revit Structure 2023 — Nota final: 16.00/20</div>
+      <div class="edu-hours">30 horas</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Jul 2023</div>
+      <div class="edu-inst">RED Academy</div>
+      <div class="edu-course">Revit Architecture 2023 — Nota final: 16.00/20 — Autodesk Learning Partner</div>
+      <div class="edu-hours">36 horas</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Jun 2023</div>
+      <div class="edu-inst">RED Academy</div>
+      <div class="edu-course">SketchUp Pro — Modelado y Documentación — Nota final: 18.00/20</div>
+      <div class="edu-hours">21 horas</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Jun 2023</div>
+      <div class="edu-inst">RED Academy</div>
+      <div class="edu-course">Metrados, costos-presupuestos y programación de obras</div>
+      <div class="edu-hours">36 horas</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Nov 2024</div>
+      <div class="edu-inst">CIVVIGU — Guadalajara</div>
+      <div class="edu-course">Diseño Bioclimático en la Vivienda Colectiva — Centro de Investigación en Vivienda Colectiva</div>
+      <div class="edu-hours">27 horas</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Mar 2021</div>
+      <div class="edu-inst">SENCICO</div>
+      <div class="edu-course">Lectura de Planos de Instalaciones Eléctricas y Sanitarias</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Abr 2025</div>
+      <div class="edu-inst">UPAO Centro de Idiomas</div>
+      <div class="edu-course">Advanced English Level — B2 — Cuatro ciclos completados</div>
+      <div class="edu-hours">168 horas</div>
+    </div>
+    <div class="edu-item">
+      <div class="edu-year">Nov 2025</div>
+      <div class="edu-inst">Revizto</div>
+      <div class="edu-course">Expert Level 1, 2 y 3 — Collaboration Essentials, Coordination Mastery, Elite Expert</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div>
+    <p class="section-index">06 — Contacto</p>
+    <h2 class="contact-tagline">Disponible para<br>nuevos <em>proyectos</em><br>&amp; desafíos</h2>
+  </div>
+  <div class="contact-info">
+    <div class="contact-item">
+      <span class="contact-label">Correo electrónico</span>
+      <a href="mailto:vharor@outlook.com" class="contact-value">vharor@outlook.com</a>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">Teléfono</span>
+      <a href="tel:+51954665762" class="contact-value">+51 954 665 762</a>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">Instagram / Portafolio</span>
+      <a href="https://www.instagram.com/victorharoarq" target="_blank" class="contact-value">@victorharoarq</a>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">Sitio web</span>
+      <a href="https://www.victorharoarq.com" target="_blank" class="contact-value">www.victorharoarq.com</a>
+    </div>
+    <div class="contact-item">
+      <span class="contact-label">Ubicación</span>
+      <span class="contact-value" style="cursor:default;">Trujillo, La Libertad — Perú</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 — Víctor Jesús Haro Rodríguez — Arquitecto &amp; BIM Modeler</p>
+  <p>Trujillo, PE — vharor@outlook.com</p>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      cursorRing.style.left = e.clientX + 'px';
+      cursorRing.style.top = e.clientY + 'px';
+    }, 60);
+  });
+
+  // Intersection Observer for animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.stat-item, .exp-item, .comp-item, .edu-item').forEach(el => observer.observe(el));
+
+  // Skill bars
+  const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        document.querySelectorAll('.skill-fill').forEach(fill => {
+          fill.style.width = fill.dataset.width + '%';
+        });
+        skillObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const skillsSection = document.getElementById('skillsSection');
+  if (skillsSection) skillObserver.observe(skillsSection);
+</script>
+</body>
+</html>
